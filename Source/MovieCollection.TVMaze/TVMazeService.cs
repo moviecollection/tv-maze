@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MovieCollection.TVMaze.Models;
@@ -512,21 +513,31 @@ namespace MovieCollection.TVMaze
         {
             string url = _options.ApiAddress + requestUrl;
 
-            if (parameters is null)
-            {
-                parameters = new List<KeyValuePair<string, string>>();
-            }
+            parameters ??= new List<KeyValuePair<string, string>>();
 
-            // Add api key if defined to list
             if (!string.IsNullOrWhiteSpace(_options.ApiKey))
             {
                 parameters.Add(new KeyValuePair<string, string>("apikey", _options.ApiKey));
             }
 
-            // Concat parameters to URL
             url += GetParametersString(parameters);
 
-            using var response = await _httpClient.GetAsync(new Uri(url))
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            return await SendRequestAsync<T>(request)
+                .ConfigureAwait(false);
+        }
+
+        private async Task<T> SendRequestAsync<T>(HttpRequestMessage request)
+        {
+            // Set the user agent if it was explicitly set via the options.
+            // This overrides the default request headers.
+            if (_options.ProductInformation != null)
+            {
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(_options.ProductInformation));
+            }
+
+            using var response = await _httpClient.SendAsync(request)
                 .ConfigureAwait(false);
 
             // TODO: Maybe handle API Rate limit (429)?

@@ -1,4 +1,6 @@
-﻿namespace MovieCollection.TVMaze
+﻿using System.Net.Http.Headers;
+
+namespace MovieCollection.TVMaze
 {
     /// <summary>
     /// The <c>TVMazeOptions</c> class.
@@ -33,5 +35,13 @@
         /// Gets or sets apiKey.
         /// </summary>
         public string ApiKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name (and version) of the product using this library.
+        /// </summary>
+        /// <remarks>
+        /// This overrides the <see cref="System.Net.Http.HttpClient.DefaultRequestHeaders"/>.
+        /// </remarks>
+        public ProductHeaderValue ProductInformation { get; set; }
     }
 }
