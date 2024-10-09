@@ -39,6 +39,7 @@
         <Authors>Peyman Mohammadi</Authors>
         <PackageId>MovieCollection.TVMaze</PackageId>
         <Copyright>© 2022 Peyman Mohammadi</Copyright>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>movie; series; api; wrapper; tvmaze</PackageTags>
         <Description>Unofficial implementation of TVMaze API</Description>
@@ -46,6 +47,10 @@
         <RepositoryUrl>https://github.com/moviecollection/tv-maze</RepositoryUrl>
         <PackageProjectUrl>https://github.com/moviecollection/tv-maze</PackageProjectUrl>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
         <Reference Include="System.Net.Http" />
