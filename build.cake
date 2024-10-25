@@ -1,7 +1,7 @@
 var target = Argument("target", "Test");
 var configuration = Argument("configuration", "Release");
 
-var version = Argument("packageversion", "");
+var version = Argument("package-version", "");
 
 var solution = "./Source/MovieCollection.TVMaze.sln";
 var artifacts = "./.artifacts";
@@ -65,7 +65,7 @@ Task("Pack")
         OutputDirectory = artifacts,
         Configuration = configuration,
         MSBuildSettings = new DotNetMSBuildSettings()
-            .WithProperty("PackageVersion", actualVersion)
+            .WithProperty("Version", actualVersion)
     });
 
     var files = GetFiles($"{artifacts}/*.nupkg");
