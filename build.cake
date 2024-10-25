@@ -60,7 +60,6 @@ Task("Pack")
 
     DotNetPack(solution, new DotNetPackSettings
     {
-        NoBuild = true,
         NoRestore = true,
         OutputDirectory = artifacts,
         Configuration = configuration,
