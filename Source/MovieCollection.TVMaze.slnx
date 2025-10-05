@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../README.md" />
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="Demo/Demo.csproj" />
+  <Project Path="MovieCollection.TVMaze/MovieCollection.TVMaze.csproj" />
+</Solution>
