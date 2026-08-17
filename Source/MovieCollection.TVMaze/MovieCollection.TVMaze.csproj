@@ -30,8 +30,9 @@
 
     <PropertyGroup>
         <Authors>Peyman Mohammadi</Authors>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageId>MovieCollection.TVMaze</PackageId>
-        <Copyright>© 2022 Peyman Mohammadi</Copyright>
+        <Copyright>© 2026 Peyman Mohammadi</Copyright>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>movie; series; api; wrapper; tvmaze</PackageTags>
@@ -43,6 +44,7 @@
 
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\Assets\icon.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
