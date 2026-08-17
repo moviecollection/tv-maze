@@ -2,7 +2,9 @@
   <Folder Name="/Solution Items/">
     <File Path="../README.md" />
     <File Path=".editorconfig" />
+    <File Path="global.json" />
   </Folder>
   <Project Path="Demo/Demo.csproj" />
+  <Project Path="MovieCollection.TVMaze.Tests/MovieCollection.TVMaze.Tests.csproj" Id="8474bcfa-9c89-4d69-a39f-da8c92516479" />
   <Project Path="MovieCollection.TVMaze/MovieCollection.TVMaze.csproj" />
 </Solution>

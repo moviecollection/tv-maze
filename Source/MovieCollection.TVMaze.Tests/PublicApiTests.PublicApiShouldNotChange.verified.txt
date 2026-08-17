@@ -1,0 +1,422 @@
+﻿[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/moviecollection/tv-maze")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
+namespace MovieCollection.TVMaze.Models
+{
+    public class Cast
+    {
+        public Cast() { }
+        [Newtonsoft.Json.JsonProperty("character")]
+        public MovieCollection.TVMaze.Models.Character Character { get; set; }
+        [Newtonsoft.Json.JsonProperty("person")]
+        public MovieCollection.TVMaze.Models.Person Person { get; set; }
+        [Newtonsoft.Json.JsonProperty("self")]
+        public bool Self { get; set; }
+        [Newtonsoft.Json.JsonProperty("voice")]
+        public bool Voice { get; set; }
+    }
+    public class CastCredits
+    {
+        public CastCredits() { }
+        [Newtonsoft.Json.JsonProperty("_embedded")]
+        public MovieCollection.TVMaze.Models.Embedded Embedded { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.CastCreditsLinks Links { get; set; }
+    }
+    public class CastCreditsLinks
+    {
+        public CastCreditsLinks() { }
+        [Newtonsoft.Json.JsonProperty("character")]
+        public MovieCollection.TVMaze.Models.LinkDefinition CharacterLink { get; set; }
+        [Newtonsoft.Json.JsonProperty("show")]
+        public MovieCollection.TVMaze.Models.LinkDefinition ShowLink { get; set; }
+    }
+    public class Character
+    {
+        public Character() { }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.Links Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+    }
+    public class Country
+    {
+        public Country() { }
+        [Newtonsoft.Json.JsonProperty("code")]
+        public string Code { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("timezone")]
+        public string TimeZone { get; set; }
+    }
+    public class Crew
+    {
+        public Crew() { }
+        [Newtonsoft.Json.JsonProperty("person")]
+        public MovieCollection.TVMaze.Models.Person Person { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+    }
+    public class CrewCredits
+    {
+        public CrewCredits() { }
+        [Newtonsoft.Json.JsonProperty("_embedded")]
+        public MovieCollection.TVMaze.Models.Embedded Embedded { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.CrewCreditsLinks Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+    }
+    public class CrewCreditsLinks
+    {
+        public CrewCreditsLinks() { }
+        [Newtonsoft.Json.JsonProperty("show")]
+        public MovieCollection.TVMaze.Models.LinkDefinition ShowLink { get; set; }
+    }
+    public class Embedded
+    {
+        public Embedded() { }
+        [Newtonsoft.Json.JsonProperty("character")]
+        public MovieCollection.TVMaze.Models.Show Character { get; set; }
+        [Newtonsoft.Json.JsonProperty("episodes")]
+        public System.Collections.Generic.IEnumerable<MovieCollection.TVMaze.Models.Episode> Episodes { get; set; }
+        [Newtonsoft.Json.JsonProperty("show")]
+        public MovieCollection.TVMaze.Models.Show Show { get; set; }
+    }
+    public class Episode
+    {
+        public Episode() { }
+        [Newtonsoft.Json.JsonProperty("airdate")]
+        public string AirDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("airstamp")]
+        public System.DateTimeOffset? AirStamp { get; set; }
+        [Newtonsoft.Json.JsonProperty("airtime")]
+        public string AirTime { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.Links Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("number")]
+        public int Number { get; set; }
+        [Newtonsoft.Json.JsonProperty("rating")]
+        public MovieCollection.TVMaze.Models.Rating Rating { get; set; }
+        [Newtonsoft.Json.JsonProperty("runtime")]
+        public int Runtime { get; set; }
+        [Newtonsoft.Json.JsonProperty("season")]
+        public int Season { get; set; }
+        [Newtonsoft.Json.JsonProperty("summary")]
+        public string Summary { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+    }
+    public class Externals
+    {
+        public Externals() { }
+        [Newtonsoft.Json.JsonProperty("imdb")]
+        public string Imdb { get; set; }
+        [Newtonsoft.Json.JsonProperty("tvrage")]
+        public long? TVRage { get; set; }
+        [Newtonsoft.Json.JsonProperty("thetvdb")]
+        public long? TheTVDb { get; set; }
+    }
+    public class Image
+    {
+        public Image() { }
+        [Newtonsoft.Json.JsonProperty("medium")]
+        public System.Uri Medium { get; set; }
+        [Newtonsoft.Json.JsonProperty("original")]
+        public System.Uri Original { get; set; }
+    }
+    public class LinkDefinition
+    {
+        public LinkDefinition() { }
+        [Newtonsoft.Json.JsonProperty("href")]
+        public System.Uri Uri { get; set; }
+    }
+    public class Links
+    {
+        public Links() { }
+        [Newtonsoft.Json.JsonProperty("self")]
+        public MovieCollection.TVMaze.Models.LinkDefinition Self { get; set; }
+    }
+    public class Network
+    {
+        public Network() { }
+        [Newtonsoft.Json.JsonProperty("country")]
+        public MovieCollection.TVMaze.Models.Country Country { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("officialSite")]
+        public System.Uri OfficialSite { get; set; }
+    }
+    public class Person
+    {
+        public Person() { }
+        [Newtonsoft.Json.JsonProperty("birthday")]
+        public string Birthday { get; set; }
+        [Newtonsoft.Json.JsonProperty("country")]
+        public MovieCollection.TVMaze.Models.Country Country { get; set; }
+        [Newtonsoft.Json.JsonProperty("deathday")]
+        public string Deathday { get; set; }
+        [Newtonsoft.Json.JsonProperty("gender")]
+        public string Gender { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.Links Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
+        [Newtonsoft.Json.JsonProperty("updated")]
+        public System.DateTimeOffset? Updated { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+    }
+    public class Rating
+    {
+        public Rating() { }
+        [Newtonsoft.Json.JsonProperty("average")]
+        public double? Average { get; set; }
+    }
+    public class Schedule
+    {
+        public Schedule() { }
+        [Newtonsoft.Json.JsonProperty("airdate")]
+        public string AirDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("airstamp")]
+        public System.DateTimeOffset AirStamp { get; set; }
+        [Newtonsoft.Json.JsonProperty("airtime")]
+        public string AirTime { get; set; }
+        [Newtonsoft.Json.JsonProperty("_embedded")]
+        public MovieCollection.TVMaze.Models.Embedded Embedded { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.Links Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("number")]
+        public int? Number { get; set; }
+        [Newtonsoft.Json.JsonProperty("runtime")]
+        public int? Runtime { get; set; }
+        [Newtonsoft.Json.JsonProperty("season")]
+        public int Season { get; set; }
+        [Newtonsoft.Json.JsonProperty("show")]
+        public MovieCollection.TVMaze.Models.Show Show { get; set; }
+        [Newtonsoft.Json.JsonProperty("summary")]
+        public string Summary { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+    }
+    public class Search
+    {
+        public Search() { }
+        [Newtonsoft.Json.JsonProperty("score")]
+        public double Score { get; set; }
+        [Newtonsoft.Json.JsonProperty("show")]
+        public MovieCollection.TVMaze.Models.Show Show { get; set; }
+    }
+    public class SearchPerson
+    {
+        public SearchPerson() { }
+        [Newtonsoft.Json.JsonProperty("person")]
+        public MovieCollection.TVMaze.Models.Person Person { get; set; }
+        [Newtonsoft.Json.JsonProperty("score")]
+        public double Score { get; set; }
+    }
+    public class Season
+    {
+        public Season() { }
+        [Newtonsoft.Json.JsonProperty("endDate")]
+        public System.DateTimeOffset? EndDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("episodeOrder")]
+        public int? EpisodeOrder { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.Links Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("network")]
+        public MovieCollection.TVMaze.Models.Network Network { get; set; }
+        [Newtonsoft.Json.JsonProperty("number")]
+        public int Number { get; set; }
+        [Newtonsoft.Json.JsonProperty("premiereDate")]
+        public System.DateTimeOffset? PremiereDate { get; set; }
+        [Newtonsoft.Json.JsonProperty("summary")]
+        public string Summary { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+        [Newtonsoft.Json.JsonProperty("webChannel")]
+        public MovieCollection.TVMaze.Models.Network WebChannel { get; set; }
+    }
+    public class Show
+    {
+        public Show() { }
+        [Newtonsoft.Json.JsonProperty("averageRuntime")]
+        public int? AverageRuntime { get; set; }
+        [Newtonsoft.Json.JsonProperty("dvdCountry")]
+        public MovieCollection.TVMaze.Models.Country DvdCountry { get; set; }
+        [Newtonsoft.Json.JsonProperty("_embedded")]
+        public MovieCollection.TVMaze.Models.Embedded Embedded { get; set; }
+        [Newtonsoft.Json.JsonProperty("ended")]
+        public System.DateTimeOffset? Ended { get; set; }
+        [Newtonsoft.Json.JsonProperty("externals")]
+        public MovieCollection.TVMaze.Models.Externals Externals { get; set; }
+        [Newtonsoft.Json.JsonProperty("genres")]
+        public System.Collections.Generic.IEnumerable<string> Genres { get; set; }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("image")]
+        public MovieCollection.TVMaze.Models.Image Image { get; set; }
+        [Newtonsoft.Json.JsonProperty("language")]
+        public string Language { get; set; }
+        [Newtonsoft.Json.JsonProperty("_links")]
+        public MovieCollection.TVMaze.Models.ShowLinks Links { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("network")]
+        public MovieCollection.TVMaze.Models.Network Network { get; set; }
+        [Newtonsoft.Json.JsonProperty("officialSite")]
+        public System.Uri OfficialSite { get; set; }
+        [Newtonsoft.Json.JsonProperty("premiered")]
+        public System.DateTimeOffset? Premiered { get; set; }
+        [Newtonsoft.Json.JsonProperty("rating")]
+        public MovieCollection.TVMaze.Models.Rating Rating { get; set; }
+        [Newtonsoft.Json.JsonProperty("runtime")]
+        public int? Runtime { get; set; }
+        [Newtonsoft.Json.JsonProperty("schedule")]
+        public MovieCollection.TVMaze.Models.ShowSchedule Schedule { get; set; }
+        [Newtonsoft.Json.JsonProperty("status")]
+        public string Status { get; set; }
+        [Newtonsoft.Json.JsonProperty("summary")]
+        public string Summary { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
+        [Newtonsoft.Json.JsonProperty("updated")]
+        public System.DateTimeOffset? Updated { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+        [Newtonsoft.Json.JsonProperty("webChannel")]
+        public MovieCollection.TVMaze.Models.Network WebChannel { get; set; }
+        [Newtonsoft.Json.JsonProperty("weight")]
+        public int Weight { get; set; }
+    }
+    public class ShowAlias
+    {
+        public ShowAlias() { }
+        [Newtonsoft.Json.JsonProperty("country")]
+        public MovieCollection.TVMaze.Models.Country Country { get; set; }
+        [Newtonsoft.Json.JsonProperty("name")]
+        public string Name { get; set; }
+    }
+    public class ShowImage
+    {
+        public ShowImage() { }
+        [Newtonsoft.Json.JsonProperty("height")]
+        public int Height { get; set; }
+        [Newtonsoft.Json.JsonProperty("url")]
+        public System.Uri Url { get; set; }
+        [Newtonsoft.Json.JsonProperty("width")]
+        public int Width { get; set; }
+    }
+    public class ShowImageResolutions
+    {
+        public ShowImageResolutions() { }
+        [Newtonsoft.Json.JsonProperty("medium")]
+        public MovieCollection.TVMaze.Models.ShowImage Medium { get; set; }
+        [Newtonsoft.Json.JsonProperty("original")]
+        public MovieCollection.TVMaze.Models.ShowImage Original { get; set; }
+    }
+    public class ShowImages
+    {
+        public ShowImages() { }
+        [Newtonsoft.Json.JsonProperty("id")]
+        public long Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("main")]
+        public bool Main { get; set; }
+        [Newtonsoft.Json.JsonProperty("resolutions")]
+        public MovieCollection.TVMaze.Models.ShowImageResolutions Resolutions { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string Type { get; set; }
+    }
+    public class ShowLinks : MovieCollection.TVMaze.Models.Links
+    {
+        public ShowLinks() { }
+        [Newtonsoft.Json.JsonProperty("nextepisode")]
+        public MovieCollection.TVMaze.Models.LinkDefinition Nextepisode { get; set; }
+        [Newtonsoft.Json.JsonProperty("previousepisode")]
+        public MovieCollection.TVMaze.Models.LinkDefinition PreviousEpisode { get; set; }
+    }
+    public class ShowSchedule
+    {
+        public ShowSchedule() { }
+        [Newtonsoft.Json.JsonProperty("days")]
+        public System.Collections.Generic.IEnumerable<string> Days { get; set; }
+        [Newtonsoft.Json.JsonProperty("time")]
+        public string Time { get; set; }
+    }
+}
+namespace MovieCollection.TVMaze
+{
+    public class TVMazeOptions
+    {
+        public TVMazeOptions() { }
+        public TVMazeOptions(string apiKey) { }
+        public string ApiAddress { get; set; }
+        public string ApiKey { get; set; }
+        public System.Net.Http.Headers.ProductHeaderValue ProductInformation { get; set; }
+    }
+    public class TVMazeService
+    {
+        public TVMazeService(System.Net.Http.HttpClient httpClient) { }
+        public TVMazeService(System.Net.Http.HttpClient httpClient, MovieCollection.TVMaze.TVMazeOptions options) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CastCredits>> GetCastCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CrewCredits>> GetCrewCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Episode> GetEpisodeByIdAsync(int episodeId, params string[] embed) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetFullScheduleAsync() { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>> GetPersonIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Person> GetPersonInfoAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetScheduleAsync(System.DateTime? dateTime = default, string country = null) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetSeasonEpisodesAsync(int seasonId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowAlias>> GetShowAliasesAsync(int showId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Cast>> GetShowCastAsync(int showId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Crew>> GetShowCrewAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Episode> GetShowEpisodeAsync(int showId, int season, int episode) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodesListAsync(int showId, bool specials = false) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>> GetShowImagesAsync(int showId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>> GetShowIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> GetShowInfoAsync(int showId, params string[] embed) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Season>> GetShowSeasonsAsync(int showId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetStreamingScheduleAsync(System.DateTime? dateTime = default, string country = null) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByIMDbIdAsync(string imdbId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByTVDbIdAsync(string tvdbId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByTVRageIdAsync(string tvRageId) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.SearchPerson>> SearchPeopleAsync(string query) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Search>> SearchShowsAsync(string query) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchSingleShowAsync(string query, params string[] embed) { }
+    }
+}
