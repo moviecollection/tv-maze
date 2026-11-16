@@ -82,7 +82,7 @@ namespace MovieCollection.TVMaze.Models
     {
         public Embedded() { }
         [Newtonsoft.Json.JsonProperty("character")]
-        public MovieCollection.TVMaze.Models.Show Character { get; set; }
+        public MovieCollection.TVMaze.Models.Character Character { get; set; }
         [Newtonsoft.Json.JsonProperty("episodes")]
         public System.Collections.Generic.IEnumerable<MovieCollection.TVMaze.Models.Episode> Episodes { get; set; }
         [Newtonsoft.Json.JsonProperty("show")]

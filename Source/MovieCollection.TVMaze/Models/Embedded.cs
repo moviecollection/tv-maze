@@ -12,6 +12,6 @@ namespace MovieCollection.TVMaze.Models
         public Show Show { get; set; }
 
         [JsonProperty("character")]
-        public Show Character { get; set; }
+        public Character Character { get; set; }
     }
 }
