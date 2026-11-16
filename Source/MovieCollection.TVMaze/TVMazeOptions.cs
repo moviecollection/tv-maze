@@ -13,7 +13,8 @@ namespace MovieCollection.TVMaze
         public TVMazeOptions()
             : base()
         {
-            ApiAddress = "http://api.tvmaze.com";
+            ApiAddress = "https://api.tvmaze.com";
+            ApiKey = string.Empty;
         }
 
         /// <summary>
@@ -42,6 +43,6 @@ namespace MovieCollection.TVMaze
         /// <remarks>
         /// This overrides the <see cref="System.Net.Http.HttpClient.DefaultRequestHeaders"/>.
         /// </remarks>
-        public ProductHeaderValue ProductInformation { get; set; }
+        public ProductHeaderValue? ProductInformation { get; set; }
     }
 }
