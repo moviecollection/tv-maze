@@ -114,7 +114,12 @@ Start:
 
         private static async Task SearchSingleShow()
         {
-            var result = await _service.SearchSingleShowAsync("black books");
+            var request = new NewSingleSearch
+            {
+                Query = "black books",
+            };
+
+            var result = await _service.SearchSingleShowAsync(request);
 
             if (result.IsSuccess && result.Response is not null)
             {
@@ -212,7 +217,12 @@ Start:
 
         private static async Task GetShowInfo()
         {
-            var result = await _service.GetShowInfoAsync(2);
+            var request = new NewShowInfo
+            {
+                ShowId = 2,
+            };
+
+            var result = await _service.GetShowInfoAsync(request);
 
             if (result.IsSuccess && result.Response is not null)
             {
@@ -376,7 +386,12 @@ Start:
 
         private static async Task GetEpisodeInfo()
         {
-            var result = await _service.GetEpisodeByIdAsync(48221);
+            var request = new NewEpisodeInfo
+            {
+                EpisodeId = 48221,
+            };
+
+            var result = await _service.GetEpisodeByIdAsync(request);
 
             if (result.IsSuccess && result.Response is not null)
             {
@@ -386,7 +401,12 @@ Start:
 
         private static async Task GetPersonInfo()
         {
-            var result = await _service.GetPersonInfoAsync(37759);
+            var request = new NewPersonInfo
+            {
+                PersonId = 37759,
+            };
+
+            var result = await _service.GetPersonInfoAsync(request);
 
             if (result.IsSuccess && result.Response is not null)
             {
@@ -396,7 +416,13 @@ Start:
 
         private static async Task GetCastCredits()
         {
-            var result = await _service.GetCastCreditsAsync(40598, "show", "character");
+            var request = new NewPersonInfo
+            {
+                PersonId = 40598,
+                Embeddings = ["show", "character"],
+            };
+
+            var result = await _service.GetCastCreditsAsync(request);
 
             if (!result.IsSuccess || result.Response is null)
             {
@@ -414,7 +440,13 @@ Start:
 
         private static async Task GetCrewCredits()
         {
-            var result = await _service.GetCrewCreditsAsync(100, "show");
+            var request = new NewPersonInfo
+            {
+                PersonId = 100,
+                Embeddings = ["show"],
+            };
+
+            var result = await _service.GetCrewCreditsAsync(request);
 
             if (!result.IsSuccess || result.Response is null)
             {

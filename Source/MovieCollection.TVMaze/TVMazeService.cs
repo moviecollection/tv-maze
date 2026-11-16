@@ -44,15 +44,21 @@ namespace MovieCollection.TVMaze
         /// Search through all the shows in our database by the show's name.
         /// </summary>
         /// <param name="query">The search query.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Search>>> SearchShowsAsync(string query)
+        public Task<HttpResponse<IList<Search>>> SearchShowsAsync(string query, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(query))
+            {
+                throw new ArgumentException($"'{nameof(query)}' cannot be null or empty.", nameof(query));
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("q", query),
             };
 
-            return GetJsonAsync<IList<Search>>("/search/shows", parameters);
+            return GetJsonAsync<IList<Search>>("/search/shows", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -64,79 +70,142 @@ namespace MovieCollection.TVMaze
         /// <param name="query">The search query.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<Show>> SearchSingleShowAsync(string query, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>()
+            if (string.IsNullOrEmpty(query))
             {
-                new("q", query),
-            };
-
-            if (embed != null && embed.Length != 0)
-            {
-                AddEmbeddedPrametersToList(embed, parameters);
+                throw new ArgumentException($"'{nameof(query)}' cannot be null or empty.", nameof(query));
             }
 
-            return GetJsonAsync<Show>("/singlesearch/shows", parameters);
+            var request = new NewSingleSearch
+            {
+                Query = query,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
+            }
+
+            return SearchSingleShowAsync(request);
+        }
+
+        /// <summary>
+        /// Search for a single tv show.
+        /// </summary>
+        /// <remarks>This endpoint allows embedding of additional information.</remarks>
+        /// <param name="request">An instance of <see cref="NewSingleSearch"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<Show>> SearchSingleShowAsync(NewSingleSearch request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrEmpty(request?.Query))
+            {
+                throw new ArgumentException($"'{nameof(request.Query)}' cannot be null or empty.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>()
+            {
+                new("q", request.Query),
+            };
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<Show>("/singlesearch/shows", parameters, cancellationToken);
         }
 
         /// <summary>
         /// Search for a tv show with imdb id.
         /// </summary>
         /// <param name="imdbId">The imdb id of the show.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<Show>> SearchByIMDbIdAsync(string imdbId)
+        public Task<HttpResponse<Show>> SearchByIMDbIdAsync(string imdbId, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(imdbId))
+            {
+                throw new ArgumentException($"'{nameof(imdbId)}' cannot be null or empty.", nameof(imdbId));
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("imdb", imdbId),
             };
 
-            return GetJsonAsync<Show>("/lookup/shows", parameters);
+            return GetJsonAsync<Show>("/lookup/shows", parameters, cancellationToken);
         }
 
         /// <summary>
         /// Search for a tv show with tvdb id.
         /// </summary>
         /// <param name="tvdbId">The tvdb id of the show.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<Show>> SearchByTVDbIdAsync(string tvdbId)
+        public Task<HttpResponse<Show>> SearchByTVDbIdAsync(string tvdbId, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(tvdbId))
+            {
+                throw new ArgumentException($"'{nameof(tvdbId)}' cannot be null or empty.", nameof(tvdbId));
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("thetvdb", tvdbId),
             };
 
-            return GetJsonAsync<Show>("/lookup/shows", parameters);
+            return GetJsonAsync<Show>("/lookup/shows", parameters, cancellationToken);
         }
 
         /// <summary>
         /// Search for a tv show with tvrage id.
         /// </summary>
         /// <param name="tvRageId">The tvrage id of the show.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<Show>> SearchByTVRageIdAsync(string tvRageId)
+        public Task<HttpResponse<Show>> SearchByTVRageIdAsync(string tvRageId, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(tvRageId))
+            {
+                throw new ArgumentException($"'{nameof(tvRageId)}' cannot be null or empty.", nameof(tvRageId));
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("tvrage", tvRageId),
             };
 
-            return GetJsonAsync<Show>("/lookup/shows", parameters);
+            return GetJsonAsync<Show>("/lookup/shows", parameters, cancellationToken);
         }
 
         /// <summary>
         /// Search for people.
         /// </summary>
         /// <param name="query">The search query.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<SearchPerson>>> SearchPeopleAsync(string query)
+        public Task<HttpResponse<IList<SearchPerson>>> SearchPeopleAsync(string query, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(query))
+            {
+                throw new ArgumentException($"'{nameof(query)}' cannot be null or empty.", nameof(query));
+            }
+
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("q", query),
             };
 
-            return GetJsonAsync<IList<SearchPerson>>("/search/people", parameters);
+            return GetJsonAsync<IList<SearchPerson>>("/search/people", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -148,8 +217,9 @@ namespace MovieCollection.TVMaze
         /// </remarks>
         /// <param name="dateTime">The schedule date (defaults to the present day).</param>
         /// <param name="country">The schedule country (defaults to "US").</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Schedule>>> GetScheduleAsync(DateTime? dateTime = null, string? country = null)
+        public Task<HttpResponse<IList<Schedule>>> GetScheduleAsync(DateTime? dateTime = null, string? country = null, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>();
 
@@ -165,7 +235,7 @@ namespace MovieCollection.TVMaze
                 parameters.Add(new KeyValuePair<string, string>("country", country));
             }
 
-            return GetJsonAsync<IList<Schedule>>("/schedule", parameters);
+            return GetJsonAsync<IList<Schedule>>("/schedule", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -180,8 +250,9 @@ namespace MovieCollection.TVMaze
         /// </remarks>
         /// <param name="dateTime">The schedule date (defaults to the present day).</param>
         /// <param name="country">The schedule country (defaults to "US").</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Schedule>>> GetStreamingScheduleAsync(DateTime? dateTime = null, string? country = null)
+        public Task<HttpResponse<IList<Schedule>>> GetStreamingScheduleAsync(DateTime? dateTime = null, string? country = null, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>();
 
@@ -197,7 +268,7 @@ namespace MovieCollection.TVMaze
                 parameters.Add(new KeyValuePair<string, string>("country", country));
             }
 
-            return GetJsonAsync<IList<Schedule>>("/schedule/web", parameters);
+            return GetJsonAsync<IList<Schedule>>("/schedule/web", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -205,10 +276,11 @@ namespace MovieCollection.TVMaze
         /// Be advised that this endpoint's response is at least several MB large.
         /// As opposed to the other endpoints, results are cached for 24 hours.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Schedule>>> GetFullScheduleAsync()
+        public Task<HttpResponse<IList<Schedule>>> GetFullScheduleAsync(CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<Schedule>>("/schedule/full", null);
+            return GetJsonAsync<IList<Schedule>>("/schedule/full", null, cancellationToken);
         }
 
         /// <summary>
@@ -220,16 +292,50 @@ namespace MovieCollection.TVMaze
         /// <param name="showId">The show id.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<Show>> GetShowInfoAsync(int showId, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            if (embed != null && embed.Length != 0)
+            var request = new NewShowInfo
             {
-                AddEmbeddedPrametersToList(embed, parameters);
+                ShowId = showId,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
             }
 
-            return GetJsonAsync<Show>($"/shows/{showId}", parameters);
+            return GetShowInfoAsync(request);
+        }
+
+        /// <summary>
+        /// Retrieve all primary information for a given show.
+        /// </summary>
+        /// <remarks>This endpoint allows embedding of additional information.</remarks>
+        /// <param name="request">An instance of <see cref="NewShowInfo"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<Show>> GetShowInfoAsync(NewShowInfo request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (!request.ShowId.HasValue)
+            {
+                throw new ArgumentException($"'{nameof(request.ShowId)}' cannot be null.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<Show>($"/shows/{request.ShowId}", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -239,8 +345,9 @@ namespace MovieCollection.TVMaze
         /// </summary>
         /// <param name="showId">The show id.</param>
         /// <param name="specials">Should specials be included.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false)
+        public Task<HttpResponse<IList<Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>();
 
@@ -249,7 +356,7 @@ namespace MovieCollection.TVMaze
                 parameters.Add(new KeyValuePair<string, string>("specials", "1"));
             }
 
-            return GetJsonAsync<IList<Episode>>($"/shows/{showId}/episodes", parameters);
+            return GetJsonAsync<IList<Episode>>($"/shows/{showId}/episodes", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -259,8 +366,9 @@ namespace MovieCollection.TVMaze
         /// <param name="showId">The show id.</param>
         /// <param name="season">The season number.</param>
         /// <param name="episode">The episode number.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<Episode>> GetShowEpisodeAsync(int showId, int season, int episode)
+        public Task<HttpResponse<Episode>> GetShowEpisodeAsync(int showId, int season, int episode, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>()
             {
@@ -268,7 +376,7 @@ namespace MovieCollection.TVMaze
                 new("number", episode.ToString(CultureInfo.InvariantCulture)),
             };
 
-            return GetJsonAsync<Episode>($"/shows/{showId}/episodebynumber", parameters);
+            return GetJsonAsync<Episode>($"/shows/{showId}/episodebynumber", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -278,15 +386,16 @@ namespace MovieCollection.TVMaze
         /// </summary>
         /// <param name="showId">The show id.</param>
         /// <param name="dateTime">The episode date.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Episode>>> GetShowEpisodesByDateAsync(int showId, DateTime dateTime)
+        public Task<HttpResponse<IList<Episode>>> GetShowEpisodesByDateAsync(int showId, DateTime dateTime, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("date", dateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
             };
 
-            return GetJsonAsync<IList<Episode>>($"/shows/{showId}/episodesbydate", parameters);
+            return GetJsonAsync<IList<Episode>>($"/shows/{showId}/episodesbydate", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -294,10 +403,11 @@ namespace MovieCollection.TVMaze
         /// Seasons are returned in ascending order and contain the full information that's known about them.
         /// </summary>
         /// <param name="showId">The show id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Season>>> GetShowSeasonsAsync(int showId)
+        public Task<HttpResponse<IList<Season>>> GetShowSeasonsAsync(int showId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<Season>>($"/shows/{showId}/seasons", null);
+            return GetJsonAsync<IList<Season>>($"/shows/{showId}/seasons", null, cancellationToken);
         }
 
         /// <summary>
@@ -305,10 +415,11 @@ namespace MovieCollection.TVMaze
         /// they can be recognized by a NULL value for number.
         /// </summary>
         /// <param name="seasonId">The season id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Episode>>> GetSeasonEpisodesAsync(int seasonId)
+        public Task<HttpResponse<IList<Episode>>> GetSeasonEpisodesAsync(int seasonId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<Episode>>($"/seasons/{seasonId}/episodes", null);
+            return GetJsonAsync<IList<Episode>>($"/seasons/{seasonId}/episodes", null, cancellationToken);
         }
 
         /// <summary>
@@ -317,10 +428,11 @@ namespace MovieCollection.TVMaze
         /// Items are ordered by importance, which is determined by the total number of appearances of the given character in this show.
         /// </summary>
         /// <param name="showId">The show id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Cast>>> GetShowCastAsync(int showId)
+        public Task<HttpResponse<IList<Cast>>> GetShowCastAsync(int showId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<Cast>>($"/shows/{showId}/cast", null);
+            return GetJsonAsync<IList<Cast>>($"/shows/{showId}/cast", null, cancellationToken);
         }
 
         /// <summary>
@@ -328,10 +440,11 @@ namespace MovieCollection.TVMaze
         /// Each crew item is a combination of a person and their crew type.
         /// </summary>
         /// <param name="showId">The show id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Crew>>> GetShowCrewAsync(int showId)
+        public Task<HttpResponse<IList<Crew>>> GetShowCrewAsync(int showId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<Crew>>($"/shows/{showId}/crew", null);
+            return GetJsonAsync<IList<Crew>>($"/shows/{showId}/crew", null, cancellationToken);
         }
 
         /// <summary>
@@ -339,10 +452,11 @@ namespace MovieCollection.TVMaze
         /// Otherwise, it's the AKA for that show in the given foreign country.
         /// </summary>
         /// <param name="showId">The show id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<ShowAlias>>> GetShowAliasesAsync(int showId)
+        public Task<HttpResponse<IList<ShowAlias>>> GetShowAliasesAsync(int showId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<ShowAlias>>($"/shows/{showId}/akas", null);
+            return GetJsonAsync<IList<ShowAlias>>($"/shows/{showId}/akas", null, cancellationToken);
         }
 
         /// <summary>
@@ -350,10 +464,11 @@ namespace MovieCollection.TVMaze
         /// The image type can be "poster", "banner", "background", "typography", or NULL in case of legacy unclassified images.
         /// </summary>
         /// <param name="showId">The show id.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<ShowImages>>> GetShowImagesAsync(int showId)
+        public Task<HttpResponse<IList<ShowImages>>> GetShowImagesAsync(int showId, CancellationToken cancellationToken = default)
         {
-            return GetJsonAsync<IList<ShowImages>>($"/shows/{showId}/images", null);
+            return GetJsonAsync<IList<ShowImages>>($"/shows/{showId}/images", null, cancellationToken);
         }
 
         /// <summary>
@@ -368,15 +483,16 @@ namespace MovieCollection.TVMaze
         /// As opposed to the other endpoints, results from the show index are cached for up to 24 hours.
         /// </summary>
         /// <param name="page">The page number.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Show>>> GetShowIndexAsync(int page = 1)
+        public Task<HttpResponse<IList<Show>>> GetShowIndexAsync(int page = 1, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("page", page.ToString(CultureInfo.InvariantCulture)),
             };
 
-            return GetJsonAsync<IList<Show>>("/shows", parameters);
+            return GetJsonAsync<IList<Show>>("/shows", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -386,16 +502,50 @@ namespace MovieCollection.TVMaze
         /// <param name="episodeId">The episode id.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<Episode>> GetEpisodeByIdAsync(int episodeId, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            if (embed != null && embed.Length != 0)
+            var request = new NewEpisodeInfo
             {
-                AddEmbeddedPrametersToList(embed, parameters);
+                EpisodeId = episodeId,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
             }
 
-            return GetJsonAsync<Episode>($"/episodes/{episodeId}", parameters);
+            return GetEpisodeByIdAsync(request);
+        }
+
+        /// <summary>
+        /// Retrieve all primary information for a given episode.
+        /// </summary>
+        /// <remarks>This endpoint allows embedding of additional information.</remarks>
+        /// <param name="request">An instance of <see cref="NewEpisodeInfo"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<Episode>> GetEpisodeByIdAsync(NewEpisodeInfo request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (!request.EpisodeId.HasValue)
+            {
+                throw new ArgumentException($"'{nameof(request.EpisodeId)}' cannot be null.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<Episode>($"/episodes/{request.EpisodeId}", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -405,16 +555,50 @@ namespace MovieCollection.TVMaze
         /// <param name="personId">The person id.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<Person>> GetPersonInfoAsync(int personId, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            if (embed != null && embed.Length != 0)
+            var request = new NewPersonInfo
             {
-                AddEmbeddedPrametersToList(embed, parameters);
+                PersonId = personId,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
             }
 
-            return GetJsonAsync<Person>($"/people/{personId}", parameters);
+            return GetPersonInfoAsync(request);
+        }
+
+        /// <summary>
+        /// Retrieve all primary information for a given person.
+        /// </summary>
+        /// <remarks>This endpoint allows embedding of additional information.</remarks>
+        /// <param name="request">An instance of <see cref="NewPersonInfo"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<Person>> GetPersonInfoAsync(NewPersonInfo request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (!request.PersonId.HasValue)
+            {
+                throw new ArgumentException($"'{nameof(request.PersonId)}' cannot be null.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<Person>($"/people/{request.PersonId}", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -426,16 +610,54 @@ namespace MovieCollection.TVMaze
         /// <param name="personId">The person id.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<IList<CastCredits>>> GetCastCreditsAsync(int personId, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            if (embed != null && embed.Length != 0)
+            var request = new NewPersonInfo
             {
-                AddEmbeddedPrametersToList(embed, parameters);
+                PersonId = personId,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
             }
 
-            return GetJsonAsync<IList<CastCredits>>($"/people/{personId}/castcredits", parameters);
+            return GetCastCreditsAsync(request);
+        }
+
+        /// <summary>
+        /// Retrieve all (show-level) cast credits for a person.
+        /// A cast credit is a combination of both a show and a character.
+        /// </summary>
+        /// <remarks>
+        /// By default, only a reference to each show and character will be returned.
+        /// However, this endpoint supports embedding, which means full information for the shows and characters can be included.
+        /// </remarks>
+        /// <param name="request">An instance of <see cref="NewPersonInfo"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<IList<CastCredits>>> GetCastCreditsAsync(NewPersonInfo request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (!request.PersonId.HasValue)
+            {
+                throw new ArgumentException($"'{nameof(request.PersonId)}' cannot be null.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<IList<CastCredits>>($"/people/{request.PersonId}/castcredits", parameters, cancellationToken);
         }
 
         /// <summary>
@@ -447,34 +669,73 @@ namespace MovieCollection.TVMaze
         /// <param name="personId">The person id.</param>
         /// <param name="embed">The embeddings.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [Obsolete("This method will be removed in the next version, please use the new overloads instead.")]
         public Task<HttpResponse<IList<CrewCredits>>> GetCrewCreditsAsync(int personId, params string[] embed)
         {
-            var parameters = new List<KeyValuePair<string, string>>();
-
-            if (embed != null && embed.Length != 0)
+            var request = new NewPersonInfo
             {
-                AddEmbeddedPrametersToList(embed, parameters);
+                PersonId = personId,
+            };
+
+            if (embed is not null)
+            {
+                request.Embeddings.AddRange(embed);
             }
 
-            return GetJsonAsync<IList<CrewCredits>>($"/people/{personId}/crewcredits", parameters);
+            return GetCrewCreditsAsync(request);
         }
 
         /// <summary>
-        /// A list of all people in our database, please refer to the <seealso cref="GetShowIndexAsync(int)"/> documentation.
+        /// Retrieve all (show-level) crew credits for a person.
+        /// A crew credit is combination of both a show and a crew type.
+        /// </summary>
+        /// <remarks>
+        /// By default, only a reference to each show will be returned.
+        /// However, this endpoint supports embedding, which means full information for the shows can be included.
+        /// </remarks>
+        /// <param name="request">An instance of <see cref="NewPersonInfo"/> class.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="request"/> is null.</exception>
+        public Task<HttpResponse<IList<CrewCredits>>> GetCrewCreditsAsync(NewPersonInfo request, CancellationToken cancellationToken = default)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (!request.PersonId.HasValue)
+            {
+                throw new ArgumentException($"'{nameof(request.PersonId)}' cannot be null.", nameof(request));
+            }
+
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (request.Embeddings != null && request.Embeddings.Count != 0)
+            {
+                AddEmbeddedPrametersToList(request.Embeddings, parameters);
+            }
+
+            return GetJsonAsync<IList<CrewCredits>>($"/people/{request.PersonId}/crewcredits", parameters, cancellationToken);
+        }
+
+        /// <summary>
+        /// A list of all people in our database, please refer to the <seealso cref="GetShowIndexAsync(int, CancellationToken)"/> documentation.
         /// </summary>
         /// <remarks>
         /// A maximum of 1000 results per page is returned.
         /// </remarks>
         /// <param name="page">The page number.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Person>>> GetPersonIndexAsync(int page = 1)
+        public Task<HttpResponse<IList<Person>>> GetPersonIndexAsync(int page = 1, CancellationToken cancellationToken = default)
         {
             var parameters = new List<KeyValuePair<string, string>>()
             {
                 new("page", page.ToString(CultureInfo.InvariantCulture)),
             };
 
-            return GetJsonAsync<IList<Person>>("/people", parameters);
+            return GetJsonAsync<IList<Person>>("/people", parameters, cancellationToken);
         }
 
         private static string GetParametersString(IEnumerable<KeyValuePair<string, string>> parameters)
@@ -490,14 +751,14 @@ namespace MovieCollection.TVMaze
             return builder.ToString();
         }
 
-        private static void AddEmbeddedPrametersToList(string[] embed, List<KeyValuePair<string, string>> parameters)
+        private static void AddEmbeddedPrametersToList(List<string> embed, List<KeyValuePair<string, string>> parameters)
         {
             if (embed is null)
             {
                 throw new ArgumentNullException(nameof(embed));
             }
 
-            if (embed.Length == 1)
+            if (embed.Count == 1)
             {
                 parameters.Add(new KeyValuePair<string, string>("embed", embed[0]));
                 return;
@@ -506,7 +767,6 @@ namespace MovieCollection.TVMaze
             foreach (var item in embed)
             {
                 parameters.Add(new KeyValuePair<string, string>("embed[]", item));
-                return;
             }
         }
 

@@ -169,6 +169,31 @@ namespace MovieCollection.TVMaze.Models
         [Newtonsoft.Json.JsonProperty("officialSite")]
         public System.Uri OfficialSite { get; set; }
     }
+    public abstract class NewEmbedding
+    {
+        protected NewEmbedding() { }
+        public System.Collections.Generic.List<string> Embeddings { get; set; }
+    }
+    public class NewEpisodeInfo : MovieCollection.TVMaze.Models.NewEmbedding
+    {
+        public NewEpisodeInfo() { }
+        public int? EpisodeId { get; set; }
+    }
+    public class NewPersonInfo : MovieCollection.TVMaze.Models.NewEmbedding
+    {
+        public NewPersonInfo() { }
+        public int? PersonId { get; set; }
+    }
+    public class NewShowInfo : MovieCollection.TVMaze.Models.NewEmbedding
+    {
+        public NewShowInfo() { }
+        public int? ShowId { get; set; }
+    }
+    public class NewSingleSearch : MovieCollection.TVMaze.Models.NewEmbedding
+    {
+        public NewSingleSearch() { }
+        public string Query { get; set; }
+    }
     public class Person
     {
         public Person() { }
@@ -400,30 +425,48 @@ namespace MovieCollection.TVMaze
     {
         public TVMazeService(System.Net.Http.HttpClient httpClient) { }
         public TVMazeService(System.Net.Http.HttpClient httpClient, MovieCollection.TVMaze.TVMazeOptions options) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CastCredits>>> GetCastCreditsAsync(MovieCollection.TVMaze.Models.NewPersonInfo request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CastCredits>>> GetCastCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CrewCredits>>> GetCrewCreditsAsync(MovieCollection.TVMaze.Models.NewPersonInfo request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CrewCredits>>> GetCrewCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetEpisodeByIdAsync(MovieCollection.TVMaze.Models.NewEpisodeInfo request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetEpisodeByIdAsync(int episodeId, params string[] embed) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetFullScheduleAsync() { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>>> GetPersonIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetFullScheduleAsync(System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>>> GetPersonIndexAsync(int page = 1, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Person>> GetPersonInfoAsync(MovieCollection.TVMaze.Models.NewPersonInfo request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Person>> GetPersonInfoAsync(int personId, params string[] embed) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetScheduleAsync(System.DateTime? dateTime = default, string? country = null) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetSeasonEpisodesAsync(int seasonId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowAlias>>> GetShowAliasesAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Cast>>> GetShowCastAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Crew>>> GetShowCrewAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodeAsync(int showId, int season, int episode) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>>> GetShowImagesAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>>> GetShowIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetScheduleAsync(System.DateTime? dateTime = default, string? country = null, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetSeasonEpisodesAsync(int seasonId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowAlias>>> GetShowAliasesAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Cast>>> GetShowCastAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Crew>>> GetShowCrewAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodeAsync(int showId, int season, int episode, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>>> GetShowImagesAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>>> GetShowIndexAsync(int page = 1, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> GetShowInfoAsync(MovieCollection.TVMaze.Models.NewShowInfo request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> GetShowInfoAsync(int showId, params string[] embed) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Season>>> GetShowSeasonsAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetStreamingScheduleAsync(System.DateTime? dateTime = default, string? country = null) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByIMDbIdAsync(string imdbId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVDbIdAsync(string tvdbId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVRageIdAsync(string tvRageId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.SearchPerson>>> SearchPeopleAsync(string query) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Search>>> SearchShowsAsync(string query) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Season>>> GetShowSeasonsAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetStreamingScheduleAsync(System.DateTime? dateTime = default, string? country = null, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByIMDbIdAsync(string imdbId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVDbIdAsync(string tvdbId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVRageIdAsync(string tvRageId, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.SearchPerson>>> SearchPeopleAsync(string query, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Search>>> SearchShowsAsync(string query, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchSingleShowAsync(MovieCollection.TVMaze.Models.NewSingleSearch request, System.Threading.CancellationToken cancellationToken = default) { }
+        [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
+            "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchSingleShowAsync(string query, params string[] embed) { }
     }
 }
