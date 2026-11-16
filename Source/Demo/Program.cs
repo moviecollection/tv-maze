@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using MovieCollection.TVMaze;
+using MovieCollection.TVMaze.Models;
 
 namespace Demo
 {
@@ -9,21 +10,20 @@ namespace Demo
     {
         // HttpClient is intended to be instantiated once per application, rather than per-use.
         // See https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient
-        private static readonly HttpClient _httpClient = new HttpClient();
-        private static TVMazeService _service;
+
+        private static readonly HttpClient _httpClient = new();
+
+        // Note: The 'ApiKey' is optional.
+        private static readonly TVMazeService _service = new(_httpClient);
 
         private static async Task Main()
         {
-            // Initialize
-            // Note: The 'ApiKey' is optional.
-            _service = new TVMazeService(_httpClient);
-
 Start:
             Console.Clear();
             Console.WriteLine("Welcome to the TVMaze demo.\n");
 
-            string[] items = new string[]
-            {
+            string[] items =
+            [
                 "1. Show search",
                 "2. Show single search",
                 "3. Show search: IMDb Id",
@@ -46,7 +46,7 @@ Start:
                 "20. Person main information",
                 "21. Person cast credits",
                 "22. Person crew credits",
-            };
+            ];
 
             foreach (var item in items)
             {
@@ -95,293 +95,454 @@ Start:
 
         private static async Task SearchShows()
         {
-            var results = await _service.SearchShowsAsync("fleabag");
+            var result = await _service.SearchShowsAsync("fleabag");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Show.Id);
-                Console.WriteLine("Name: {0}", item.Show.Name);
-                Console.WriteLine("Network Name: {0}", item.Show.Network?.Name);
-                Console.WriteLine("Summary: {0}", item.Show.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Console.WriteLine("Score: {0}", item.Score);
+                Print(item.Show);
             }
         }
 
         private static async Task SearchSingleShow()
         {
-            var item = await _service.SearchSingleShowAsync("black books");
+            var result = await _service.SearchSingleShowAsync("black books");
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Network Name: {0}", item.Network?.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task SearchByIMDbId()
         {
             // BoJack Horseman
-            var item = await _service.SearchByIMDbIdAsync("tt3398228");
+            var result = await _service.SearchByIMDbIdAsync("tt3398228");
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Network Name: {0}", item.Network?.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task SearchByTVDbId()
         {
             // Solar Opposites
-            var item = await _service.SearchByTVDbIdAsync("375892");
+            var result = await _service.SearchByTVDbIdAsync("375892");
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Network Name: {0}", item.Network?.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task SearchByTVRageId()
         {
-            var item = await _service.SearchByTVRageIdAsync("24493");
+            var result = await _service.SearchByTVRageIdAsync("24493");
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Network Name: {0}", item.Network?.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task SearchPeople()
         {
-            var results = await _service.SearchPeopleAsync("cate");
+            var result = await _service.SearchPeopleAsync("cate");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Person.Id);
-                Console.WriteLine("Name: {0}", item.Person.Name);
-                Console.WriteLine("Image: {0}", item.Person.Image?.Original);
-                Console.WriteLine("Birthday: {0}", item.Person.Birthday);
-                Console.WriteLine("Updated: {0}", item.Person.Updated);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Console.WriteLine("Score: {0}", item.Score);
+                Print(item.Person);
             }
         }
 
         private static async Task GetSchedule()
         {
             // Common mistake: if you want UK's schedule pass "GB" as country.
-            var results = await _service.GetScheduleAsync(country: "US");
+            var result = await _service.GetScheduleAsync(country: "US");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Show Name: {0}", item.Show?.Name);
-                Console.WriteLine("Episode Name: {0}", item.Name);
-                Console.WriteLine("Network Name: {0}", item.Show?.Network?.Name);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetWebSchedule()
         {
-            var results = await _service.GetStreamingScheduleAsync(country: "US");
+            var result = await _service.GetStreamingScheduleAsync(country: "US");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Show Name: {0}", item.Embedded?.Show?.Name);
-                Console.WriteLine("Episode Name: {0}", item.Name);
-                Console.WriteLine("Network Name: {0}", item.Embedded?.Show?.WebChannel?.Name);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowInfo()
         {
-            var item = await _service.GetShowInfoAsync(2);
+            var result = await _service.GetShowInfoAsync(2);
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Network Name: {0}", item.Network?.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task GetShowEpisodes()
         {
-            var results = await _service.GetShowEpisodesListAsync(16149);
+            var result = await _service.GetShowEpisodesListAsync(16149);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Name: {0}", item.Name);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowEpisode()
         {
-            var item = await _service.GetShowEpisodeAsync(16149, 2, 3);
+            var result = await _service.GetShowEpisodeAsync(16149, 2, 3);
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Summary: {0}", item.Summary);
-            Console.WriteLine("******************************");
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task GetShowEpisodesByDate()
         {
-            var results = await _service.GetShowEpisodesByDateAsync(17078, new DateTime(2019, 04, 12));
+            var result = await _service.GetShowEpisodesByDateAsync(17078, new DateTime(2019, 04, 12));
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Name: {0}", item.Name);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowSeasons()
         {
-            var results = await _service.GetShowSeasonsAsync(17078);
+            var result = await _service.GetShowSeasonsAsync(17078);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Number: {0}", item.Number);
-                Console.WriteLine("PremiereDate: {0}", item.PremiereDate);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetSeasonEpisodes()
         {
-            var results = await _service.GetSeasonEpisodesAsync(82424);
+            var result = await _service.GetSeasonEpisodesAsync(82424);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Name: {0}", item.Name);
-                Console.WriteLine("Number: {0}", item.Number);
-                Console.WriteLine("Summary: {0}", item.Summary);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowCast()
         {
-            var results = await _service.GetShowCastAsync(530);
+            var result = await _service.GetShowCastAsync(530);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Person Id: {0}", item.Person.Id);
-                Console.WriteLine("Person Name: {0}", item.Person?.Name);
-                Console.WriteLine("Person Image: {0}", item.Person?.Image?.Original);
-                Console.WriteLine("Character Name: {0}", item.Character?.Name);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowCrew()
         {
-            var results = await _service.GetShowCrewAsync(530);
+            var result = await _service.GetShowCrewAsync(530);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Type: {0}", item.Type);
-                Console.WriteLine("Person Id: {0}", item.Person.Id);
-                Console.WriteLine("Person Name: {0}", item.Person?.Name);
-                Console.WriteLine("Person Image: {0}", item.Person?.Image?.Original);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowAliases()
         {
-            var results = await _service.GetShowAliasesAsync(171);
+            var result = await _service.GetShowAliasesAsync(171);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Name: {0}", item.Name);
-                Console.WriteLine("Country: {0}", item.Country?.Name);
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetShowImages()
         {
-            var results = await _service.GetShowImagesAsync(269);
+            var result = await _service.GetShowImagesAsync(269);
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Id: {0}", item.Id);
-                Console.WriteLine("Type: {0}", item.Type);
-                Console.WriteLine("Main: {0}", item.Main);
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
 
-                if (item.Resolutions.Original != null)
-                {
-                    Console.WriteLine("\n- Original:\n");
-                    Console.WriteLine("Url: {0}", item.Resolutions.Original.Url);
-                    Console.WriteLine("Width: {0}", item.Resolutions.Original.Width);
-                    Console.WriteLine("Height: {0}", item.Resolutions.Original.Height);
-                }
+                return;
+            }
 
-                if (item.Resolutions.Medium != null)
-                {
-                    Console.WriteLine("\n- Medium:\n");
-                    Console.WriteLine("Url: {0}", item.Resolutions.Medium.Url);
-                    Console.WriteLine("Width: {0}", item.Resolutions.Medium.Width);
-                    Console.WriteLine("Height: {0}", item.Resolutions.Medium.Height);
-                }
-
-                Console.WriteLine("******************************");
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetEpisodeInfo()
         {
-            var item = await _service.GetEpisodeByIdAsync(48221);
+            var result = await _service.GetEpisodeByIdAsync(48221);
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Season: {0}", item.Season);
-            Console.WriteLine("Number: {0}", item.Number);
-            Console.WriteLine("Summary: {0}", item.Summary);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task GetPersonInfo()
         {
-            var item = await _service.GetPersonInfoAsync(37759);
+            var result = await _service.GetPersonInfoAsync(37759);
 
-            Console.WriteLine("Id: {0}", item.Id);
-            Console.WriteLine("Name: {0}", item.Name);
-            Console.WriteLine("Birthday: {0}", item.Birthday);
-            Console.WriteLine("Image: {0}", item.Image?.Original);
-            Console.WriteLine("Updated: {0}", item.Updated);
+            if (result.IsSuccess && result.Response is not null)
+            {
+                Print(result.Response);
+            }
         }
 
         private static async Task GetCastCredits()
         {
-            var results = await _service.GetCastCreditsAsync(40598, "show", "character");
+            var result = await _service.GetCastCreditsAsync(40598, "show", "character");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Show Name: {0}", item.Embedded?.Show?.Name);
-                Console.WriteLine("Character Name: {0}", item.Embedded?.Character?.Name);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
+            }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
             }
         }
 
         private static async Task GetCrewCredits()
         {
-            var results = await _service.GetCrewCreditsAsync(100, "show");
+            var result = await _service.GetCrewCreditsAsync(100, "show");
 
-            foreach (var item in results)
+            if (!result.IsSuccess || result.Response is null)
             {
-                Console.WriteLine("Type: {0}", item.Type);
-                Console.WriteLine("Show Name: {0}", item.Embedded?.Show?.Name);
-                Console.WriteLine("******************************");
+                Console.WriteLine("IsSuccess: {0}", result.IsSuccess);
+                Console.WriteLine("StatusCode: {0}", result.StatusCode);
+
+                return;
             }
+
+            foreach (var item in result.Response)
+            {
+                Print(item);
+            }
+        }
+
+        private static void Print(Show item)
+        {
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Name: {0}", item.Name);
+            Console.WriteLine("Network Name: {0}", item.Network?.Name);
+            Console.WriteLine("Summary: {0}", item.Summary);
+            Console.WriteLine();
+        }
+
+        private static void Print(Person item)
+        {
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Name: {0}", item.Name);
+            Console.WriteLine("Image: {0}", item.Image?.Original);
+            Console.WriteLine("Birthday: {0}", item.Birthday);
+            Console.WriteLine("Updated: {0}", item.Updated);
+            Console.WriteLine();
+        }
+
+        private static void Print(Schedule item)
+        {
+            var showName = item.Show?.Name ?? item.Embedded?.Show?.Name;
+            var networkName = item.Show?.Network?.Name ?? item.Embedded?.Show?.WebChannel?.Name;
+
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Show Name: {0}", showName);
+            Console.WriteLine("Episode Name: {0}", item.Name);
+            Console.WriteLine("Network Name: {0}", networkName);
+            Console.WriteLine("Summary: {0}", item.Summary);
+            Console.WriteLine();
+        }
+
+        private static void Print(Episode item)
+        {
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Name: {0}", item.Name);
+            Console.WriteLine("Season: {0}", item.Season);
+            Console.WriteLine("Number: {0}", item.Number);
+            Console.WriteLine("Summary: {0}", item.Summary);
+            Console.WriteLine();
+        }
+
+        private static void Print(Season item)
+        {
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Number: {0}", item.Number);
+            Console.WriteLine("PremiereDate: {0}", item.PremiereDate);
+            Console.WriteLine("Summary: {0}", item.Summary);
+            Console.WriteLine();
+        }
+
+        private static void Print(Cast item)
+        {
+            Console.WriteLine("Person Id: {0}", item.Person?.Id);
+            Console.WriteLine("Person Name: {0}", item.Person?.Name);
+            Console.WriteLine("Person Image: {0}", item.Person?.Image?.Original);
+            Console.WriteLine("Character Name: {0}", item.Character?.Name);
+            Console.WriteLine();
+        }
+
+        private static void Print(Crew item)
+        {
+            Console.WriteLine("Type: {0}", item.Type);
+            Console.WriteLine("Person Id: {0}", item.Person?.Id);
+            Console.WriteLine("Person Name: {0}", item.Person?.Name);
+            Console.WriteLine("Person Image: {0}", item.Person?.Image?.Original);
+            Console.WriteLine();
+        }
+
+        private static void Print(ShowAlias item)
+        {
+            Console.WriteLine("Name: {0}", item.Name);
+            Console.WriteLine("Country: {0}", item.Country?.Name);
+            Console.WriteLine();
+        }
+
+        private static void Print(ShowImages item)
+        {
+            Console.WriteLine("Id: {0}", item.Id);
+            Console.WriteLine("Type: {0}", item.Type);
+            Console.WriteLine("Main: {0}", item.Main);
+
+            if (item.Resolutions?.Original != null)
+            {
+                Console.WriteLine("\n- Original:\n");
+                Console.WriteLine("Url: {0}", item.Resolutions.Original.Url);
+                Console.WriteLine("Width: {0}", item.Resolutions.Original.Width);
+                Console.WriteLine("Height: {0}", item.Resolutions.Original.Height);
+            }
+
+            if (item.Resolutions?.Medium != null)
+            {
+                Console.WriteLine("\n- Medium:\n");
+                Console.WriteLine("Url: {0}", item.Resolutions.Medium.Url);
+                Console.WriteLine("Width: {0}", item.Resolutions.Medium.Width);
+                Console.WriteLine("Height: {0}", item.Resolutions.Medium.Height);
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void Print(CastCredits item)
+        {
+            Console.WriteLine("Show Name: {0}", item.Embedded?.Show?.Name);
+            Console.WriteLine("Character Name: {0}", item.Embedded?.Character?.Name);
+            Console.WriteLine();
+        }
+
+        private static void Print(CrewCredits item)
+        {
+            Console.WriteLine("Type: {0}", item.Type);
+            Console.WriteLine("Show Name: {0}", item.Embedded?.Show?.Name);
+            Console.WriteLine();
         }
     }
 }

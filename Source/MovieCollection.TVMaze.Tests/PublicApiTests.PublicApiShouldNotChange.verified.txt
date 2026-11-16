@@ -130,6 +130,13 @@ namespace MovieCollection.TVMaze.Models
         [Newtonsoft.Json.JsonProperty("thetvdb")]
         public long? TheTVDb { get; set; }
     }
+    public class HttpResponse<T>
+    {
+        public HttpResponse() { }
+        public bool IsSuccess { get; set; }
+        public T Response { get; set; }
+        public System.Net.HttpStatusCode StatusCode { get; set; }
+    }
     public class Image
     {
         public Image() { }
@@ -393,30 +400,30 @@ namespace MovieCollection.TVMaze
     {
         public TVMazeService(System.Net.Http.HttpClient httpClient) { }
         public TVMazeService(System.Net.Http.HttpClient httpClient, MovieCollection.TVMaze.TVMazeOptions options) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CastCredits>> GetCastCreditsAsync(int personId, params string[] embed) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CrewCredits>> GetCrewCreditsAsync(int personId, params string[] embed) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Episode> GetEpisodeByIdAsync(int episodeId, params string[] embed) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetFullScheduleAsync() { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>> GetPersonIndexAsync(int page = 1) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Person> GetPersonInfoAsync(int personId, params string[] embed) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetScheduleAsync(System.DateTime? dateTime = default, string country = null) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetSeasonEpisodesAsync(int seasonId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowAlias>> GetShowAliasesAsync(int showId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Cast>> GetShowCastAsync(int showId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Crew>> GetShowCrewAsync(int showId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Episode> GetShowEpisodeAsync(int showId, int season, int episode) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodesListAsync(int showId, bool specials = false) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>> GetShowImagesAsync(int showId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>> GetShowIndexAsync(int page = 1) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> GetShowInfoAsync(int showId, params string[] embed) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Season>> GetShowSeasonsAsync(int showId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>> GetStreamingScheduleAsync(System.DateTime? dateTime = default, string country = null) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByIMDbIdAsync(string imdbId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByTVDbIdAsync(string tvdbId) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchByTVRageIdAsync(string tvRageId) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.SearchPerson>> SearchPeopleAsync(string query) { }
-        public System.Threading.Tasks.Task<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Search>> SearchShowsAsync(string query) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.Show> SearchSingleShowAsync(string query, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CastCredits>>> GetCastCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.CrewCredits>>> GetCrewCreditsAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetEpisodeByIdAsync(int episodeId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetFullScheduleAsync() { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>>> GetPersonIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Person>> GetPersonInfoAsync(int personId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetScheduleAsync(System.DateTime? dateTime = default, string? country = null) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetSeasonEpisodesAsync(int seasonId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowAlias>>> GetShowAliasesAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Cast>>> GetShowCastAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Crew>>> GetShowCrewAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetShowEpisodeAsync(int showId, int season, int episode) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>>> GetShowImagesAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>>> GetShowIndexAsync(int page = 1) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> GetShowInfoAsync(int showId, params string[] embed) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Season>>> GetShowSeasonsAsync(int showId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetStreamingScheduleAsync(System.DateTime? dateTime = default, string? country = null) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByIMDbIdAsync(string imdbId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVDbIdAsync(string tvdbId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchByTVRageIdAsync(string tvRageId) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.SearchPerson>>> SearchPeopleAsync(string query) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Search>>> SearchShowsAsync(string query) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> SearchSingleShowAsync(string query, params string[] embed) { }
     }
 }
