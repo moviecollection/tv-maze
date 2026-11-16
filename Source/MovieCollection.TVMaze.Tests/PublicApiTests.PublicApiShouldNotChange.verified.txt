@@ -438,7 +438,7 @@ namespace MovieCollection.TVMaze
             "tead.")]
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Episode>> GetEpisodeByIdAsync(int episodeId, params string[] embed) { }
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Schedule>>> GetFullScheduleAsync(System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>>> GetPersonIndexAsync(int page = 1, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Person>>> GetPersonIndexAsync(int? page = default, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Person>> GetPersonInfoAsync(MovieCollection.TVMaze.Models.NewPersonInfo request, System.Threading.CancellationToken cancellationToken = default) { }
         [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
             "tead.")]
@@ -452,7 +452,7 @@ namespace MovieCollection.TVMaze
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesByDateAsync(int showId, System.DateTime dateTime, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Episode>>> GetShowEpisodesListAsync(int showId, bool specials = false, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.ShowImages>>> GetShowImagesAsync(int showId, System.Threading.CancellationToken cancellationToken = default) { }
-        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>>> GetShowIndexAsync(int page = 1, System.Threading.CancellationToken cancellationToken = default) { }
+        public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<System.Collections.Generic.IList<MovieCollection.TVMaze.Models.Show>>> GetShowIndexAsync(int? page = default, System.Threading.CancellationToken cancellationToken = default) { }
         public System.Threading.Tasks.Task<MovieCollection.TVMaze.Models.HttpResponse<MovieCollection.TVMaze.Models.Show>> GetShowInfoAsync(MovieCollection.TVMaze.Models.NewShowInfo request, System.Threading.CancellationToken cancellationToken = default) { }
         [System.Obsolete("This method will be removed in the next version, please use the new overloads ins" +
             "tead.")]

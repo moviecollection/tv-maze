@@ -486,12 +486,14 @@ namespace MovieCollection.TVMaze
         /// <param name="page">The page number.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Show>>> GetShowIndexAsync(int page = 1, CancellationToken cancellationToken = default)
+        public Task<HttpResponse<IList<Show>>> GetShowIndexAsync(int? page = null, CancellationToken cancellationToken = default)
         {
-            var parameters = new List<KeyValuePair<string, string>>()
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (page.HasValue)
             {
-                new("page", page.ToString(CultureInfo.InvariantCulture)),
-            };
+                parameters.Add(new KeyValuePair<string, string>("page", page.Value.ToString(CultureInfo.InvariantCulture)));
+            }
 
             return GetJsonAsync<IList<Show>>("/shows", parameters, cancellationToken);
         }
@@ -721,7 +723,7 @@ namespace MovieCollection.TVMaze
         }
 
         /// <summary>
-        /// A list of all people in our database, please refer to the <seealso cref="GetShowIndexAsync(int, CancellationToken)"/> documentation.
+        /// A list of all people in our database, please refer to the <seealso cref="GetShowIndexAsync(int?, CancellationToken)"/> documentation.
         /// </summary>
         /// <remarks>
         /// A maximum of 1000 results per page is returned.
@@ -729,12 +731,14 @@ namespace MovieCollection.TVMaze
         /// <param name="page">The page number.</param>
         /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public Task<HttpResponse<IList<Person>>> GetPersonIndexAsync(int page = 1, CancellationToken cancellationToken = default)
+        public Task<HttpResponse<IList<Person>>> GetPersonIndexAsync(int? page = null, CancellationToken cancellationToken = default)
         {
-            var parameters = new List<KeyValuePair<string, string>>()
+            var parameters = new List<KeyValuePair<string, string>>();
+
+            if (page.HasValue)
             {
-                new("page", page.ToString(CultureInfo.InvariantCulture)),
-            };
+                parameters.Add(new KeyValuePair<string, string>("page", page.Value.ToString(CultureInfo.InvariantCulture)));
+            }
 
             return GetJsonAsync<IList<Person>>("/people", parameters, cancellationToken);
         }
