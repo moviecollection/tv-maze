@@ -246,7 +246,7 @@ namespace MovieCollection.TVMaze
         /// <remarks>
         /// To query both local and global Web Channels, leave out the country parameter.
         /// To query only local Web Channels, set country to an ISO country code.
-        /// And to query only global Web Channels, set country to an empty string.
+        /// And to query only global Web Channels, set country to an empty string. 
         /// </remarks>
         /// <param name="dateTime">The schedule date (defaults to the present day).</param>
         /// <param name="country">The schedule country (defaults to "US").</param>
@@ -262,8 +262,9 @@ namespace MovieCollection.TVMaze
                 parameters.Add(new KeyValuePair<string, string>("date", dateTime.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)));
             }
 
-            if (!string.IsNullOrEmpty(country))
+            if (country is not null)
             {
+                // To query only global Web Channels, country can be set to an empty string. 
                 // CountryCode is an ISO 3166-1 code of the country; defaults to US.
                 parameters.Add(new KeyValuePair<string, string>("country", country));
             }
